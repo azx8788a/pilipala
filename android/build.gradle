@@ -22,12 +22,13 @@ rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(':app')
 }
 
-subprojects {
-    afterEvaluate { project ->
+gradle.projectsEvaluated {
+    subprojects {
         if (project.hasProperty('android')) {
             project.android {
                 if (namespace == null) {
@@ -39,6 +40,7 @@ subprojects {
         }
     }
 }
+
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir

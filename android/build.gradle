@@ -27,19 +27,7 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-gradle.projectsEvaluated {
-    subprojects {
-        if (project.hasProperty('android')) {
-            project.android {
-                if (namespace == null) {
-                    namespace project.group
-                }
-                compileSdkVersion 34
-                buildToolsVersion '34.0.0'
-            }
-        }
-    }
-}
+
 
 
 tasks.register("clean", Delete) {

@@ -26,7 +26,7 @@ jobs:
           token: ${{secrets.GIT_TOKEN}}
 
       - name: 检查缓存
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-flutter
         with:
           path: /root/flutter-sdk # Flutter SDK 的路径
@@ -80,7 +80,7 @@ jobs:
           done
 
       - name: 上传
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Pilipala-Release
           path: |
@@ -119,7 +119,7 @@ jobs:
           done
 
       - name: 上传
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: Pilipala-Release

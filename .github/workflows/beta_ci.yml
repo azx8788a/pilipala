@@ -112,8 +112,13 @@ jobs:
           # 更新pubspec.yaml文件中的版本号
           sed -i "s/version: .*+/version: ${{ needs.update_version.outputs.new_version }}+/g" pubspec.yaml
 
-      - name: 移除多余的 Android 36 SDK
-        run: rm -rf /usr/local/lib/android/sdk/platforms/android-36 /usr/local/lib/android/sdk/platforms/android-35 2>/dev/null || true
+      - name: 配置 Android SDK
+        run: |
+          # 创建 local.properties 指定 SDK 路径和编译版本
+          echo "sdk.dir=/usr/local/lib/android/sdk" > android/local.properties
+          # 删除高版本 SDK 防止被自动引用
+          rm -rf /usr/local/lib/android/sdk/platforms/android-36 /usr/local/lib/android/sdk/platforms/android-35 2>/dev/null || true
+          ls -d /usr/local/lib/android/sdk/platforms/* 2>/dev/null || echo "no platforms found" 
 
       - name: flutter build apk
         run: flutter build apk --release --split-per-abi

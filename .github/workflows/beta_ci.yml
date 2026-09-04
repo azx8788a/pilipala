@@ -112,13 +112,15 @@ jobs:
           # 更新pubspec.yaml文件中的版本号
           sed -i "s/version: .*+/version: ${{ needs.update_version.outputs.new_version }}+/g" pubspec.yaml
 
-      - name: 移除多余的 Android 35/36 SDK
+      - name: 设置纯净 Android SDK 环境
         run: |
-          sudo rm -rf $ANDROID_HOME/platforms/android-36 $ANDROID_HOME/platforms/android-35 2>/dev/null || true
-          sudo rm -rf /usr/local/lib/android/sdk/platforms/android-36 /usr/local/lib/android/sdk/platforms/android-35 2>/dev/null || true
-          sudo rm -rf /opt/android/sdk/platforms/android-36 /opt/android/sdk/platforms/android-35 2>/dev/null || true
-          echo "=== 剩余的 Android platforms ==="
-          ls -d $ANDROID_HOME/platforms/* 2>/dev/null || true
+          # 创建干净的 SDK 目录（只含 platform-34）
+          mkdir -p $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34
+          mkdir -p $GITHUB_WORKSPACE/custom-android-sdk/build-tools/34.0.0
+          # 复制系统 SDK 34 到自定义目录
+          cp -r $ANDROID_HOME/platforms/android-34/* $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34/ 2>/dev/null || true
+          cp -r $ANDROID_HOME/build-tools/34.0.0/* $GITHUB_WORKSPACE/custom-android-sdk/build-tools/34.0.0/ 2>/dev/null || true
+          echo "ANDROID_HOME=$GITHUB_WORKSPACE/custom-android-sdk" >> $GITHUB_ENV
 
       - name: 设置 Android SDK 环境变量
         run: |
@@ -130,6 +132,7 @@ jobs:
       - name: flutter build apk
         run: flutter build apk --release --split-per-abi
         env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}

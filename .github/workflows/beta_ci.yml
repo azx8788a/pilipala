@@ -120,9 +120,18 @@ jobs:
           echo "=== 剩余的 Android platforms ==="
           ls -d $ANDROID_HOME/platforms/* 2>/dev/null || true
 
+      - name: 设置 Android SDK 环境变量
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls -d $ANDROID_HOME/platforms/android-* 2>/dev/null || true
+          # 强制使用 SDK 34
+          export PATH="$ANDROID_HOME/platforms/android-34:$PATH"
+          
       - name: flutter build apk
         run: flutter build apk --release --split-per-abi
         env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD}}

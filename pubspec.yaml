@@ -174,14 +174,17 @@ dependency_overrides:
   media_kit:
     git:
       url: https://github.com/media-kit/media-kit
+      ref: c9617f570b8c
       path: media_kit
   media_kit_video:
     git:
       url: https://github.com/media-kit/media-kit
+      ref: c9617f570b8c
       path: media_kit_video
   media_kit_libs_video:
     git:
       url: https://github.com/media-kit/media-kit
+      ref: c9617f570b8c
       path: libs/universal/media_kit_libs_video
 
 flutter_launcher_icons:

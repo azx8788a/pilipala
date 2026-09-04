@@ -13,6 +13,8 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:ns_danmaku/ns_danmaku.dart';
 import 'package:pilipala/http/video.dart';
+import 'package:pilipala/services/sponsorblock_service.dart';
+import 'package:pilipala/utils/storage.dart';
 import 'package:pilipala/models/video/play/ao_output.dart';
 import 'package:pilipala/plugin/pl_player/index.dart';
 import 'package:pilipala/plugin/pl_player/models/play_repeat.dart';
@@ -109,6 +111,13 @@ class PlPlayerController {
   Timer? _timerForGettingVolume;
   Timer? timerForTrackingMouse;
   Timer? videoFitChangedTimer;
+
+  // SponsorBlock 空降助手
+  List<SponsorBlockSegment> _sbSegments = [];
+  Timer? _sbTimer;
+  bool _sbSeeking = false;
+  bool _sbEnabled = false;
+  Set<String> _sbCategories = {};
 
   // final Durations durations;
 
@@ -981,6 +990,45 @@ class PlPlayerController {
     timerForTrackingMouse?.cancel();
     _timerForSeek?.cancel();
     videoFitChangedTimer?.cancel();
+    _sbTimer?.cancel();
+  }
+
+  // SponsorBlock: 加载片段并启动定时检查
+  void loadSponsorBlockSegments(String bvid) {
+    _sbTimer?.cancel();
+    _sbSegments = [];
+    final box = GStrorage.setting;
+    _sbEnabled = box.get(SettingBoxKey.enableSponsorBlock, defaultValue: false);
+    if (!_sbEnabled || bvid.isEmpty) return;
+    _sbCategories = {
+      if (box.get(SettingBoxKey.sbSkipSponsor, defaultValue: true)) 'sponsor',
+      if (box.get(SettingBoxKey.sbSkipIntro, defaultValue: true)) 'intro',
+      if (box.get(SettingBoxKey.sbSkipOutro, defaultValue: false)) 'outro',
+      if (box.get(SettingBoxKey.sbSkipInteraction, defaultValue: false)) 'interaction',
+      if (box.get(SettingBoxKey.sbSkipSelfPromo, defaultValue: false)) 'selfpromo',
+    };
+    if (_sbCategories.isEmpty) return;
+    SponsorBlockService.fetchSegments(bvid).then((segs) {
+      _sbSegments = segs.where((e) => _sbCategories.contains(e.category)).toList();
+      if (_sbSegments.isNotEmpty) {
+        _sbTimer?.cancel();
+        _sbTimer = Timer.periodic(const Duration(milliseconds: 500), _sbCheck);
+      }
+    });
+  }
+
+  void _sbCheck(Timer t) {
+    if (_sbSeeking || playerStatus.status.value != PlayerStatus.playing) return;
+    final pos = position.value.inMilliseconds / 1000.0;
+    for (final seg in _sbSegments) {
+      if (pos >= seg.startTime && pos < seg.endTime - 0.5) {
+        _sbSeeking = true;
+        seekTo(Duration(seconds: seg.endTime.toInt())).then((_) {
+          _sbSeeking = false;
+        });
+        break;
+      }
+    }
   }
 
   // 记录播放记录

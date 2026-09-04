@@ -110,6 +110,38 @@ const List<SettingEntry> settingEntries = [
       group: '播放设置',
       setKey: SettingBoxKey.enableShowDanmaku),
   SettingEntry(
+      title: '空降助手',
+      subtitle: '自动跳过赞助商广告、片头片尾等片段',
+      group: '播放设置',
+      setKey: SettingBoxKey.enableSponsorBlock),
+  SettingEntry(
+      title: '跳过恰饭广告',
+      subtitle: '跳过赞助商推广片段',
+      group: '播放设置',
+      setKey: SettingBoxKey.sbSkipSponsor,
+      defaultVal: true),
+  SettingEntry(
+      title: '跳过片头',
+      subtitle: '跳过开场动画、无意义片头',
+      group: '播放设置',
+      setKey: SettingBoxKey.sbSkipIntro,
+      defaultVal: true),
+  SettingEntry(
+      title: '跳过片尾',
+      subtitle: '跳过片尾致谢、结尾动画',
+      group: '播放设置',
+      setKey: SettingBoxKey.sbSkipOutro),
+  SettingEntry(
+      title: '跳过互动提醒',
+      subtitle: '跳过求三连、求关注等提醒',
+      group: '播放设置',
+      setKey: SettingBoxKey.sbSkipInteraction),
+  SettingEntry(
+      title: '跳过自我推广',
+      subtitle: '跳过UP主推广自己的周边等',
+      group: '播放设置',
+      setKey: SettingBoxKey.sbSkipSelfPromo),
+  SettingEntry(
       title: '控制栏动画',
       subtitle: '播放器控制栏显示动画效果',
       group: '播放设置',

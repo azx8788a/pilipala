@@ -172,6 +172,43 @@ class _PlaySettingState extends State<PlaySetting> {
               Request.setBaseUrl(type: val ? 'bangumi' : 'default');
             },
           ),
+          // SponsorBlock 空降助手
+          const SetSwitchItem(
+            title: '空降助手',
+            subTitle: '自动跳过赞助商广告、片头片尾等片段',
+            setKey: SettingBoxKey.enableSponsorBlock,
+            defaultVal: false,
+          ),
+          const SetSwitchItem(
+            title: '跳过恰饭广告',
+            subTitle: '跳过赞助商推广片段',
+            setKey: SettingBoxKey.sbSkipSponsor,
+            defaultVal: true,
+          ),
+          const SetSwitchItem(
+            title: '跳过片头',
+            subTitle: '跳过开场动画、无意义片头',
+            setKey: SettingBoxKey.sbSkipIntro,
+            defaultVal: true,
+          ),
+          const SetSwitchItem(
+            title: '跳过片尾',
+            subTitle: '跳过片尾致谢、结尾动画',
+            setKey: SettingBoxKey.sbSkipOutro,
+            defaultVal: false,
+          ),
+          const SetSwitchItem(
+            title: '跳过互动提醒',
+            subTitle: '跳过求三连、求关注等提醒',
+            setKey: SettingBoxKey.sbSkipInteraction,
+            defaultVal: false,
+          ),
+          const SetSwitchItem(
+            title: '跳过自我推广',
+            subTitle: '跳过UP主推广自己的周边等',
+            setKey: SettingBoxKey.sbSkipSelfPromo,
+            defaultVal: false,
+          ),
           ListTile(
             dense: false,
             title: Text('默认视频画质', style: titleStyle),

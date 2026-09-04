@@ -297,6 +297,8 @@ class VideoDetailController extends GetxController
 
     /// 开启自动全屏时，在player初始化完成后立即传入headerControl
     plPlayerController.headerControl = headerControl;
+    // SponsorBlock 空降助手
+    plPlayerController.loadSponsorBlockSegments(bvid);
 
     plPlayerController.subtitles.value = subtitles;
   }

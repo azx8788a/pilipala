@@ -99,6 +99,14 @@ class SettingBoxKey {
       enableBackgroundPlay = 'enableBackgroundPlay',
       fullScreenGestureMode = 'fullScreenGestureMode',
 
+      // SponsorBlock 空降助手
+      enableSponsorBlock = 'enableSponsorBlock',
+      sbSkipSponsor = 'sbSkipSponsor',
+      sbSkipIntro = 'sbSkipIntro',
+      sbSkipOutro = 'sbSkipOutro',
+      sbSkipInteraction = 'sbSkipInteraction',
+      sbSkipSelfPromo = 'sbSkipSelfPromo',
+
       /// 隐私
       blackMidsList = 'blackMidsList',
 

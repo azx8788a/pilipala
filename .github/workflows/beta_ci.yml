@@ -117,6 +117,9 @@ jobs:
           # 创建干净的 SDK 目录（只含 platform-34）
           mkdir -p $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34
           mkdir -p $GITHUB_WORKSPACE/custom-android-sdk/build-tools/34.0.0
+          echo "spec.build-project=Android SDK Platform" > $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34/source.properties
+          echo "Pkg.Desc=Android SDK Platform 34" >> $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34/source.properties
+          echo "Pkg.Revision=34.0.0" >> $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34/source.properties
           # 复制系统 SDK 34 到自定义目录
           cp -r $ANDROID_HOME/platforms/android-34/* $GITHUB_WORKSPACE/custom-android-sdk/platforms/android-34/ 2>/dev/null || true
           cp -r $ANDROID_HOME/build-tools/34.0.0/* $GITHUB_WORKSPACE/custom-android-sdk/build-tools/34.0.0/ 2>/dev/null || true

@@ -99,7 +99,7 @@ jobs:
           channel: any
 
       - name: 下载项目依赖
-        run: flutter pub get --enforce-lockfile
+        run: flutter pub get
 
       - name: 解码生成 jks
         run: echo $KEYSTORE_BASE64 | base64 -di > android/app/vvex.jks

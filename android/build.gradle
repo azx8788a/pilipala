@@ -26,6 +26,21 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Make root buildscript classpath (including KGP 1.9.0) available to all
+// subprojects so plugins like 'kotlin-android' applied inside plugins (e.g.
+// wakelock_plus) resolve to the same Kotlin version.
+subprojects { subproject ->
+    subproject.buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

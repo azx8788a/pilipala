@@ -6,6 +6,20 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
+// 为老插件补 namespace（AGP 8.x 强制要求）
+subprojects { subproject ->
+    subproject.afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            project.android {
+                if (namespace == null || namespace.isEmpty()) {
+                    namespace = project.group != null && project.group.contains(".") ? project.group : "com.example.${project.name.replaceAll("[^a-zA-Z0-9_]", "")}"
+                }
+            }
+        }
+    }
+}
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }

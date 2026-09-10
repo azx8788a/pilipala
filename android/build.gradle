@@ -27,6 +27,20 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// AGP 8 要求 manifest 移除以 package 属性（namespace 已在各模块 build.gradle 或本文件注入）
+gradle.projectsEvaluated {
+    subprojects { p ->
+        def manifestFile = new File(p.projectDir, "src/main/AndroidManifest.xml")
+        if (manifestFile.exists()) {
+            def text = manifestFile.getText("UTF-8")
+            def updated = text.replaceAll(/(<manifest[^>]*?)\s+package=["'][^"']*["']/, '$1')
+            if (updated != text) {
+                manifestFile.setText(updated, "UTF-8")
+            }
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
